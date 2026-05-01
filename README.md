@@ -62,10 +62,6 @@ programs.niri.extraConfig = ''
     animations {
         slowdown 0.5;
     }
-
-    layout {
-        gaps 0;
-    }
 '';
 ```
 
@@ -75,7 +71,16 @@ programs.niri.bind.modeFile = /home/user/.local/state/niri-bind-mode;
 ```
 
 ## Resulting .kdl
-TODO
+For the curious, here is a snippet of the `binds.kdl` produced by this flake in my personal configuration. You can see it uses case statements for any binds that appear in modes other than `default`.
 
 ``` kdl
+spawn-sh-at-startup "echo default > /tmp/niri-bind-mode"
+
+binds {
+XF86MonBrightnessUp { spawn-sh "brightnessctl -e3 set 3%+"; }
+MOD+A { spawn-sh "niri msg action focus-window-or-workspace-up ; echo default > /tmp/niri-bind-mode"; }
+MOD+Period { spawn-sh "echo dropdown > /tmp/niri-bind-mode"; }
+MOD+T { spawn-sh "case $(cat /tmp/niri-bind-mode) in ''|default) niri msg action spawn -- 'kitty' ; echo default > /tmp/niri-bind-mode ;; dropdown) niridrop term ;; esac"; }
+MOD+W { spawn-sh "case $(cat /tmp/niri-bind-mode) in dropdown) niridrop ;; esac"; }
+}
 ````
