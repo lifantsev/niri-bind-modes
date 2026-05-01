@@ -11,6 +11,10 @@ A temporary file contains the name of the current mode. Keys are bound using `sp
 - Modes are only 'one-shot', if you want modes that persist for multiple key presses, open an issue or email me and I'll implement it.
 - Keys that are bound in any mode are bound globally. This means that if you bind `Mod+R` to a resizing mode, and within that mode you bind `hjkl` to resizing actions, `hjkl` will be bound (and therefore intercepted) even if their mode isn't active. You can work around this by binding them to [wtype](https://github.com/atx/wtype) in other modes. This could be added to this flake as some sort of passthrough option; if you would like that, open an issue or email me.
 
+### planned features
+
+- Aside from `default`, add another special mode called `overview` with binds that are activated when the overview is open.
+
 ## Quickstart
 
 Add this flake as an input, import the home manager module, and set up your bind attrset:
@@ -33,14 +37,14 @@ programs.niri.bind-modes = {
             K = "focus-window-up";
             L = "focus-column-right";
 
-            CTRL.L = [ "set-column-width" "+5%" ];
             CTRL.H = [ "set-column-width" "-5%" ];
+            CTRL.L = [ "set-column-width" "+5%" ];
 
             CTRL.SHIFT.Q = "quit";
 
             O = mode "open";
 
-            # use 'NONE' to prevent application of defaultModifiers:
+            # use 'NONE' to create binds that don't include `defaultModifiers`
             NONE.XF86MonBrightnessUp = sh "brightnessctl set 3%+";
             NONE.SHIFT.XF86MonBrightnessUp = sh "brightnessctl set 10%+";
         };

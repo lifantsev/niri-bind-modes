@@ -1,5 +1,7 @@
 # Configuring
 
+All options are under `programs.niri.bind-modes`.
+
 ## enableBindsFile
 
 Whether to enable the creation of `binds.kdl`. This file is not automatically loaded by niri, so you must add `include "binds.kdl"` to `config.kdl`. You can do this manually, or you can set `enableConfigFile` which does it automatically.
@@ -33,8 +35,8 @@ The top level of the attrset should be the modes (where `default` is the default
 The action should be one of the following:
 - string: niri action to execute (eg `"focus-column-left"`)
 - list of strings: niri action with arguments (eg `[ "set-column-width" "+5%" ]`)
-- (sh <string>): shell commands to execute (eg `sh "notify-send hello && notify-send bye"`)
-- (mode <string>): mode to switch to (eg `mode "launcher"`)
+- (sh *string*): shell commands to execute (eg `sh "notify-send hello && notify-send bye"`)
+- (mode *string*): mode to switch to (eg `mode "launcher"`)
 
 ``` nix
 programs.niri.bind-modes.binds = { sh, mode, ... }: {
