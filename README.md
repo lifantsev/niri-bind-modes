@@ -17,7 +17,7 @@ A temporary file contains the name of the current mode. Keys are bound using `sp
 
 ## Quickstart
 
-Add this flake as an input, import the home manager module, and set up your bind attrset:
+For a description of all options, see [CONFIGURING.md](CONFIGURING.md). To use `niri-bind-modes`, add this flake as an input, import the home manager module, and set up your bind attrset:
 ``` nix
 # flake.nix
 inputs.niri-bind-modes.url = "github:lifantsev/niri-bind-modes";
@@ -55,8 +55,6 @@ programs.niri.bind-modes = {
     };
 };
 ```
-
-For a description of all options, see [CONFIGURING.md](CONFIGURING.md).
 
 ## Resulting .kdl
 For the curious, here is the `binds.kdl` produced by this flake when used with the above configuration (with added indentation & newlines for readability). You can see it uses case statements for any binds that appear in modes other than `default`.
