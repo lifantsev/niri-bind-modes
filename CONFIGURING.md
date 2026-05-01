@@ -35,7 +35,7 @@ The top level of the attrset should be the modes (where `default` is the default
 The action should be one of the following:
 - string: niri action to execute (eg `"focus-column-left"`)
 - list of strings: niri action with arguments (eg `[ "set-column-width" "+5%" ]`)
-- (sh *string*): shell commands to execute (eg `sh "notify-send hello && notify-send bye"`)
+- (sh *string*): shell command to execute (eg `sh "notify-send hello && notify-send bye"`)
 - (mode *string*): mode to switch to (eg `mode "launcher"`)
 
 ``` nix
