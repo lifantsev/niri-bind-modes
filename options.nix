@@ -22,6 +22,13 @@
         example = [ "MOD" ];
     };
 
+    bind.modeFile = lib.mkOption {
+        description = "temporary file to read/write current bind mode to";
+        type = lib.types.path;
+        default = /tmp/niri-bind-mode;
+        example = /home/user/.local/state/niri-bind-mode;
+    };
+
     bind.set = lib.mkOption {
         description = "set <mode>.<MOD1>.<MOD2>.<key> to either 1. a str: niri action, 2. a list of strs: niri action with args, 3. a list w/ one str: mode to enable, 4. an attrs with a string attr named `sh`: shellscript to run";
         type = lib.types.attrsOf lib.types.anything;

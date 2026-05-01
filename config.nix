@@ -9,7 +9,7 @@
         '');
 
         xdg.configFile."niri/binds.kdl".text = (import ./pipeline args {
-            inherit (config.programs.niri.bind) set defaultModifiers;
+            inherit (config.programs.niri.bind) set defaultModifiers modeFile;
         });
     })
 ]

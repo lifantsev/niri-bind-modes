@@ -1,10 +1,10 @@
-{ lib, ... }: { set, defaultModifiers }: let
+{ lib, ... }: { set, defaultModifiers, modeFile }: let
     args = {
         inherit lib;
         inherit defaultModifiers;
 
-        setMode = mode: "echo ${mode} > /tmp/niri.mode";
-        getMode = "cat /tmp/niri.mode";
+        setMode = mode: "echo ${mode} > ${toString modeFile}";
+        getMode = "cat ${toString modeFile}";
 
         modifiers = [
             "NONE"

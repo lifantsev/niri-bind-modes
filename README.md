@@ -1,15 +1,15 @@
 # niri-bind-modes
 
-niri doesn't offer mode-based keybinds out of the box (also called layers or submaps). this flake helps by compiling a mode-based binding attribute set into a binds.kdl file. fully native and static: no scripts/daemons required.
+Niri doesn't offer mode-based keybinds out of the box (also called layers or submaps). This flake helps by compiling a mode-based binding attribute set into a binds.kdl file. Fully native and static: no scripts/daemons required.
 
 ### how it works
 
-A temporary file contains the name of the current mode (TODO: will be configurable but currently it's `/tmp/niri.mode`). Keys are bound using `spawn-sh`, and they write to or read from this file to determine what to do.
+A temporary file contains the name of the current mode. Keys are bound using `spawn-sh`, and they write to or read from this file to determine what to do.
 
 ### limitations
 
 - Modes are only 'one-shot', if you want modes that persist for multiple key presses, open an issue or email me and I'll implement it.
-- Keys that are bound in any mode are bound permanently. This means that if you bind `Mod+R` to a resizing mode, and within that mode you bind `hjkl` to resizing actions, `hjkl` will be bound (and therefore intercepted) even if their mode isn't active. You can work around this by binding them to [wtype](https://github.com/atx/wtype) in other modes. This could be added to this flake as some sort of passthrough option, if you would like that open an issue or email me.
+- Keys that are bound in any mode are bound permanently. This means that if you bind `Mod+R` to a resizing mode, and within that mode you bind `hjkl` to resizing actions, `hjkl` will be bound (and therefore intercepted) even if their mode isn't active. You can work around this by binding them to [wtype](https://github.com/atx/wtype) in other modes. This could be added to this flake as some sort of passthrough option, if you would like that, open an issue or email me.
 
 ## Usage
 
@@ -58,4 +58,24 @@ programs.niri.bind.set.default = {
 
 This flake uses `xdg.configFile."niri/config.kdl"` to point niri to the `binds.kdl` file. If your configuration already sets this, `binds.kdl` won't be included in `config.kdl` and your bindings won't be registered. Use `extraConfig` instead:
 ``` nix
+programs.niri.extraConfig = ''
+    animations {
+        slowdown 0.5;
+    }
+
+    layout {
+        gaps 0;
+    }
+'';
 ```
+
+By default the current mode is saved to `/tmp/niri-bind-mode`. This can be changed using the following option (just make sure the parent directory exists):
+``` nix
+programs.niri.bind.modeFile = /home/user/.local/state/niri-bind-mode;
+```
+
+## Resulting .kdl
+TODO
+
+``` kdl
+````
