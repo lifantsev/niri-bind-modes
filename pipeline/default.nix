@@ -1,3 +1,8 @@
+# TODO
+# add an `overlay` mode
+# bindings in this mode will trigger only when the niri overlay is open
+# this can be implemented in a phase between 4 & 5
+# it would merge `overlay` into `default` using `niri msg overview-state`
 { lib, ... }: { set, defaultModifiers, modeFile }: let
     args = {
         inherit lib;
