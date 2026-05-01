@@ -18,8 +18,8 @@
     bind.defaultModifiers = lib.mkOption {
         description = "list of modifiers to use in all bindings unless they use the 'NONE' modifier";
         type = lib.types.listOf lib.types.str;
-        default = [ "MOD" ];
-        example = [ ];
+        default = [ ];
+        example = [ "MOD" ];
     };
 
     bind.set = lib.mkOption {
