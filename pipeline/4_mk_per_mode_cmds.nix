@@ -1,14 +1,14 @@
 # 4_mk_per_mode_cmds
 #
 # now that we have a list of atomic binding attrsets,
-# we start the process of converting them into niri binding config lines
+# we start the process of converting them into niri config lines
 #
 # first, we take the 'binds' attrset from each binding:
-# { mode1 = "action1"; mode2 = "action2"; }
+# { mode1 = "action1"; mode2.sh = "shellscript --help"; }
 #
 # and, for every mode, convert the action to a shell command that executes it
 # - for simple actions, prepend 'niri msg action'
-# - for actions with argument, use 'niri msg action ${action} -- ${arguments}'
+# - for actions with arguments, use 'niri msg action ${action} -- ${arguments}'
 # - for mode changes (lists with only one element), use the setMode function
 # - for attrsets (this is when we use .sh) use the raw shellscript provided
 #

@@ -1,13 +1,11 @@
 # 1_transpose_tree
 # 
-# first, we take the base attrset (containing bind attrsets for each mode)
-# and we 'tag' every leaf (a terminal node: one that isn't an attrset) with the name of the mode
+# first, we take the base attrset (containing attrsets for each mode)
+# and we 'tag' every binding (leaf node) with the name of the mode its in
 #
-# that way, instead of the top separation being mode and lower separation being key combo
-# now the top separation is the key combo and lower separation is mode
-# (because for end user configuration it makes sense to separate modes, but in niri each key can only be bound once)
+# now the top separation is the key combo and lower separation is mode (instead of other way)
 #
-# this allows is to merge all of the previously separate mode attrsets
+# this allows us to merge all of the previously separate mode attrsets
 # so now we have one big attrset of key combos and each leaf node has different actions defined per mode
 #
 # instead of attrs.<mode>.<modifiers>.<key> = "some action"
