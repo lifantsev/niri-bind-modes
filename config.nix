@@ -1,15 +1,15 @@
-{ lib, config, ... }@args: lib.mkMerge [
-    {
-        xdg.configFile."niri/config.kdl".text = config.programs.niri.extraConfig;
-    }
+{ lib, config, ... }@args: let cfg = config.programs.niri.bind-modes; in lib.mkMerge [
+    (lib.mkIf cfg.enableConfigFile {
+        xdg.configFile."niri/config.kdl".text = cfg.extraConfig;
+    })
 
-    (lib.mkIf (config.programs.niri.bind.set != {}) {
-        programs.niri.extraConfig = (lib.mkBefore ''
+    (lib.mkIf cfg.enableBindsFile {
+        programs.niri.bind-modes.extraConfig = (lib.mkBefore ''
             include "binds.kdl"
         '');
 
         xdg.configFile."niri/binds.kdl".text = (import ./pipeline args {
-            inherit (config.programs.niri.bind) set defaultModifiers modeFile;
+            inherit (cfg) binds defaultModifiers modeFile;
         });
     })
 ]

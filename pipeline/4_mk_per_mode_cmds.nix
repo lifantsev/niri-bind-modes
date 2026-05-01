@@ -4,13 +4,14 @@
 # we start the process of converting them into niri config lines
 #
 # first, we take the 'binds' attrset from each binding:
-# { mode1 = "action1"; mode2.sh = "shellscript --help"; }
+# { mode1 = "action1"; mode2 = { sh = "shellscript --help"; }; }
 #
 # and, for every mode, convert the action to a shell command that executes it
 # - for simple actions, prepend 'niri msg action'
 # - for actions with arguments, use 'niri msg action ${action} -- ${arguments}'
-# - for mode changes (lists with only one element), use the setMode function
-# - for attrsets (this is when we use .sh) use the raw shellscript provided
+# - for attrsets
+#   - if there's a `sh` key use its value as the cmd
+#   - if there's a `mode` key switch mode to it
 #
 # every cmd that isn't a mode change also runs ${setMode default}, to reset any possibly active mode
 
@@ -19,13 +20,17 @@
         if builtins.typeOf bind == "string" then
             "niri msg action ${bind} ; ${setMode "default"}"
         else if builtins.typeOf bind == "list" then
-            if builtins.length bind == 1
-            then setMode (builtins.head bind)
-            else "niri msg action ${builtins.head bind} -- ${lib.concatStringsSep " " (map (arg: "'${arg}'") (builtins.tail bind))} ; ${setMode "default"}"
-        else "${bind.sh}";
+            "niri msg action ${builtins.head bind} -- ${lib.concatStringsSep " " (map (arg: "'${arg}'") (builtins.tail bind))} ; ${setMode "default"}"
+        else if builtins.typeOf bind == "set" then
+            if builtins.attrNames bind == [ "sh" ] then
+                bind.sh
+            else if builtins.attrNames bind == [ "mode" ] then
+                setMode bind.mode
+            else "echo"
+        else "echo";
 
-    modifyBind = bind: {
+    mkModeCmds = bind: {
         cmds = lib.mapAttrs (_: b: bindToCmd b) bind.binds;
         inherit (bind) key mods;
     };
-in map modifyBind prevStep
+in map mkModeCmds prevStep

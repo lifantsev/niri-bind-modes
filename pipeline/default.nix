@@ -3,7 +3,7 @@
 # bindings in this mode will trigger only when the niri overlay is open
 # this can be implemented in a phase between 4 & 5
 # it would merge `overlay` into `default` using `niri msg overview-state`
-{ lib, ... }: { set, defaultModifiers, modeFile }: let
+{ lib, ... }: { binds, defaultModifiers, modeFile }: let
     args = {
         inherit lib;
         inherit defaultModifiers;
@@ -19,7 +19,10 @@
             "ALT"
         ];
     };
-in lib.pipe set
+in lib.pipe (binds {
+        sh = str: { sh = str; };
+        mode = str: { mode = str; };
+    })
 [
     (import ./1_transpose_tree.nix args)
     (import ./2_bundle_binding_data.nix args)

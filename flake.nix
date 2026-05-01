@@ -3,7 +3,7 @@
     inputs = {};
     outputs = { ... }: {
         homeManagerModules.default = args: {
-            options.programs.niri = import ./options.nix args;
+            options.programs.niri.bind-modes = import ./options.nix args;
             config = import ./config.nix args;
         };
     };

@@ -9,16 +9,13 @@
 { lib, getMode, ... }: prevStep: let
     mkCase = mode: cmd: "${if mode == "default" then "''|default" else mode}) ${cmd} ;;";
 
-    mergeCmds = attrs: 
-        if builtins.attrNames attrs == [ "default" ] then
-            attrs.default
+    mkConditionalCmd = bind: {
+        inherit (bind) key mods;
+        cmd = if builtins.attrNames bind.cmds == [ "default" ] then
+            bind.cmds.default
         else
             "case $(${getMode}) in "
-            + lib.concatStringsSep " " (lib.mapAttrsToList mkCase attrs)
+            + lib.concatStringsSep " " (lib.mapAttrsToList mkCase bind.cmds)
             + " esac";
-
-    modifyBind = bind: {
-        cmd = mergeCmds bind.cmds;
-        inherit (bind) key mods;
     };
-in map modifyBind prevStep
+in map mkConditionalCmd prevStep
