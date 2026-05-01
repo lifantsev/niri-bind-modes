@@ -1,6 +1,6 @@
 # niri-bind-modes
 
-Niri [doesn't offer](https://github.com/niri-wm/niri/issues/846) mode-based keybinds out of the box (also called layers or submaps). This flake helps by compiling an easy to read, mode-based keybind definition into a binds.kdl file. Fully native and static: no scripts/daemons required.
+Niri [doesn't offer](https://github.com/niri-wm/niri/issues/846) mode-based keybinds out of the box (also called layers or submaps). This flake helps by compiling an easy to read, mode-based keybind definition into a `binds.kdl` file. Fully native and static: no scripts, daemons, or external tools.
 
 ### how it works
 
