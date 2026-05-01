@@ -1,4 +1,5 @@
-{ ... }@args: { binds, defaultModifiers }:
+{ ... }@args: { set, defaultModifiers }:
+# TODO use lib.pipe
 import ./1_transpose_tree.nix (args // {
     inherit defaultModifiers;
 
@@ -12,4 +13,4 @@ import ./1_transpose_tree.nix (args // {
         "CTRL"
         "ALT"
     ];
-}) binds
+}) set
