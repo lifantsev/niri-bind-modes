@@ -8,15 +8,12 @@
 # collecting the 'leaves' into a list,
 # while discarding the 'branches'
 
-{ lib, modifiers, ... }@args: prevStep: let
+{ lib, modifiers, ... }: prevStep: let
     listBinds = attrs: lib.concatLists (lib.mapAttrsToList (name: value:
         if builtins.elem name modifiers then
             listBinds value
         else [ value ]
     ) attrs);
-in
-    import ./4_mk_per_mode_cmds.nix args (
-        listBinds prevStep
-    )
+in listBinds prevStep
 
 

@@ -6,7 +6,7 @@
 # if a binding is only defined for the default mode, we just run the command whenever the key is it
 # otherwise, we use a case statement to decide which cmd to run
 
-{ lib, getMode, ... }@args: prevStep: let
+{ lib, getMode, ... }: prevStep: let
     mkCase = mode: cmd: "${if mode == "default" then "''|default" else mode}) ${cmd} ;;";
 
     mergeCmds = attrs: 
@@ -21,7 +21,4 @@
         cmd = mergeCmds bind.cmds;
         inherit (bind) key mods;
     };
-in
-    import ./6_render_niri_block.nix args (
-        map modifyBind prevStep
-    )
+in map modifyBind prevStep

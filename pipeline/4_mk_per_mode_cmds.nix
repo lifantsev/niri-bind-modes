@@ -14,7 +14,7 @@
 #
 # every cmd that isn't a mode change also runs ${setMode default}, to reset any possibly active mode
 
-{ lib, setMode, ... }@args: prevStep: let
+{ lib, setMode, ... }: prevStep: let
     bindToCmd = bind:
         if builtins.typeOf bind == "string" then
             "niri msg action ${bind} ; ${setMode "default"}"
@@ -28,7 +28,4 @@
         cmds = lib.mapAttrs (_: b: bindToCmd b) bind.binds;
         inherit (bind) key mods;
     };
-in
-    import ./5_mk_conditional_cmds.nix args (
-        map modifyBind prevStep
-    )
+in map modifyBind prevStep

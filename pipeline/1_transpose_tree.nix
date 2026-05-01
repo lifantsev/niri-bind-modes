@@ -13,7 +13,7 @@
 # instead of attrs.<mode>.<modifiers>.<key> = "some action"
 # we now have attrs.<modifiers>.<key>.<mode> = "some action"
 
-{ lib, modifiers, ... }@args: binds: let
+{ lib, modifiers, ... }: binds: let
     recursiveMergeAttrsList = lib.lists.foldr (a: b: lib.recursiveUpdate a b) {};
     tagAttrs = tag: attrs:
         builtins.mapAttrs (name: value:
@@ -22,7 +22,4 @@
             else
                 { "${tag}" = value; }
         ) attrs;
-in
-    import ./2_bundle_binding_data.nix args (
-        recursiveMergeAttrsList (lib.mapAttrsToList (mode: bindset: tagAttrs mode bindset) binds)
-    )
+in recursiveMergeAttrsList (lib.mapAttrsToList (mode: bindset: tagAttrs mode bindset) binds)

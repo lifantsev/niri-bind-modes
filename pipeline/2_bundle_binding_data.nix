@@ -16,7 +16,7 @@
 #
 # we will extract the leaf nodes into a list next...
 
-{ lib, modifiers, defaultModifiers, ... }@args: prevStep: let 
+{ lib, modifiers, defaultModifiers, ... }: prevStep: let 
     collectModsInAttrs = mods: attrs:
         builtins.mapAttrs (name: value:
             if builtins.elem name modifiers then
@@ -30,7 +30,4 @@
             }
         ) attrs;
 
-in
-    import ./3_collect_bundles.nix args (
-        collectModsInAttrs [] prevStep
-    )
+in collectModsInAttrs [] prevStep
