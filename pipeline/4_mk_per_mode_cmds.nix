@@ -18,9 +18,9 @@
 { lib, setMode, ... }: prevStep: let
     bindToCmd = bind:
         if builtins.typeOf bind == "string" then
-            "niri msg action ${bind} ; ${setMode "default"}"
+            "niri msg action ${bind}"
         else if builtins.typeOf bind == "list" then
-            "niri msg action ${builtins.head bind} -- ${lib.concatStringsSep " " (map (arg: "'${arg}'") (builtins.tail bind))} ; ${setMode "default"}"
+            "niri msg action ${builtins.head bind} -- ${lib.concatStringsSep " " (map (arg: "'${arg}'") (builtins.tail bind))}"
         else if builtins.typeOf bind == "set" then
             if builtins.attrNames bind == [ "sh" ] then
                 bind.sh
@@ -29,8 +29,15 @@
             else "echo"
         else "echo";
 
+    # reverts mode to default if `bind` isn't a mode setting action
+    bindToCmdDefault = bind:
+        if builtins.typeOf bind == "set" && builtins.attrNames bind == [ "mode" ] then
+            bindToCmd bind
+        else
+            "${bindToCmd bind} ; ${setMode "default"}";
+
     mkModeCmds = bind: {
-        cmds = lib.mapAttrs (_: b: bindToCmd b) bind.binds;
+        cmds = lib.mapAttrs (_: b: bindToCmdDefault b) bind.binds;
         inherit (bind) key mods;
     };
 in map mkModeCmds prevStep
