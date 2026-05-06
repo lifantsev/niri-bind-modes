@@ -31,7 +31,7 @@ programs.niri.bind-modes = {
 
     defaultModifiers = [ "MOD" ];
     binds = { sh, mode, ... }: {
-        default = {
+        default = { # default submap/mode
             H = "focus-column-left";
             J = "focus-window-down";
             K = "focus-window-up";
@@ -49,7 +49,7 @@ programs.niri.bind-modes = {
             NONE.SHIFT.XF86MonBrightnessUp = sh "brightnessctl set 10%+";
         };
 
-        open = {
+        open = { # submap for opening apps
             T = [ "spawn" "kitty" ];
         };
     };
