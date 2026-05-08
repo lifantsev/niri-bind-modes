@@ -1,23 +1,5 @@
 { lib, ... }: {
-    enableConfigFile = lib.mkEnableOption "overwrite of `config.kdl` (includes `extraConfig`; and if `enableBindsFile` is set, also adds `include \"binds.kdl\")";
-
-    extraConfig = lib.mkOption {
-        description = "lines to append to niri's config.kdl";
-        type = lib.types.lines;
-        default = "";
-        example = ''
-            workspace "dropdown" { }
-            window-rule {
-                match app-id=r#"^dropdown-"#
-                open-on-workspace "dropdown"
-
-                open-floating true
-                open-focused false
-            }
-        '';
-    };
-
-    enableBindsFile = lib.mkEnableOption "generating and writing the mode-based bind config to `binds.kdl`";
+    enable = lib.mkEnableOption "addition of binds to niri-flake settings attrset";
 
     defaultModifiers = lib.mkOption {
         description = "list of modifiers to use in all bindings unless they use the 'NONE' modifier";

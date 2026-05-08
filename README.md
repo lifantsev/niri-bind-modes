@@ -1,6 +1,6 @@
 # niri-bind-modes
 
-Niri [doesn't offer](https://github.com/niri-wm/niri/issues/846) mode-based keybinds out of the box (also called layers or submaps). This flake helps by compiling an easy to read, mode-based keybind definition into a `binds.kdl` file. Fully native and static: no scripts, daemons, or external tools.
+Niri [doesn't offer](https://github.com/niri-wm/niri/issues/846) mode-based keybinds out of the box (also called layers or submaps). This flake helps by compiling an easy to read, mode-based keybind definition into a settings attrset for [niri-flake](https://github.com/sodiboo/niri-flake). Fully native and static: no scripts or daemons.
 
 ### how it works
 
@@ -8,6 +8,7 @@ A temporary file contains the name of the current mode. Keys are bound using `sp
 
 ### limitations
 
+- Depends on [niri-flake](https://github.com/sodiboo/niri-flake) to generate config.kdl.
 - Modes are only 'one-shot', if you want modes that persist for multiple key presses, open an issue or email me and I'll implement it.
 - Keys that are bound in any mode are bound globally. This means that if you bind `Mod+R` to a resizing mode, and within that mode you bind `hjkl` to resizing actions, `hjkl` will be bound (and therefore intercepted) even if their mode isn't active. You can work around this by binding them to [wtype](https://github.com/atx/wtype) in other modes. This could be added to this flake as some sort of passthrough option; if you would like that, open an issue or email me.
 
@@ -17,17 +18,20 @@ A temporary file contains the name of the current mode. Keys are bound using `sp
 
 ## Quickstart
 
-For a description of all options, see [CONFIGURING.md](CONFIGURING.md). To use `niri-bind-modes`, add this flake as an input, import the home manager module, and set up your bind attrset:
+For a description of all options, see [CONFIGURING.md](CONFIGURING.md). To use `niri-bind-modes`, add this flake as an input, import the home manager module, and set up your bind attrset. If you dont't already, make sure you import [niri-flake's](https://github.com/sodiboo/niri-flake) config module (this creates `config.kdl`).
 ``` nix
 # flake.nix
 inputs.niri-bind-modes.url = "github:lifantsev/niri-bind-modes";
+inputs.niri.url = "github:sodiboo/niri-flake";
 
 # home.nix
-imports = [ inputs.niri-bind-modes.homeManagerModules.default ]
+imports = [
+    inputs.niri-bind-modes.homeManagerModules.default
+    inputs.niri.homeModules.config
+]
 
 programs.niri.bind-modes = {
-    enableBindsFile = true;
-    enableConfigFile = true;
+    enable = true;
 
     defaultModifiers = [ "MOD" ];
     binds = { sh, mode, ... }: {
@@ -57,7 +61,7 @@ programs.niri.bind-modes = {
 ```
 
 ## Resulting .kdl
-For the curious, here is the `binds.kdl` produced by this flake when used with the above configuration (with added indentation & newlines for readability). You can see it uses case statements for any binds that appear in modes other than `default`.
+For the curious, here is the `.kdl` produced by this flake when used with the above configuration. You can see it uses case statements for any binds that appear in modes other than `default`.
 
 ``` kdl
 spawn-sh-at-startup "echo default > /tmp/niri-bind-mode"

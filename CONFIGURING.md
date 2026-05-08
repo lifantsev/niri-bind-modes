@@ -2,15 +2,15 @@
 
 All options are under `programs.niri.bind-modes`.
 
-## enableBindsFile
+## enable
 
-Whether to enable the creation of `binds.kdl`. This file is not automatically loaded by niri, so you must add `include "binds.kdl"` to `config.kdl`. You can do this manually, or you can set `enableConfigFile` which does it automatically.
+Whether to enable the module, which will populate `programs.niri.settings.binds`, and add to `programs.niri.settings.spawn-at-startup` to reset the mode on startup.
 
-### modeFile
+## modeFile
 
 A filepath that the generated bindings will read/write to keep track of the currently active mode. By default it's `/tmp/niri-bind-mode`.
 
-### defaultModifiers
+## defaultModifiers
 
 A list of modifiers to apply to all bindings. To create bindings that don't include the `defaultModifiers`, use the `NONE` modifier:
 ``` nix
@@ -26,7 +26,7 @@ programs.niri.bind-modes = {
 };
 ```
 
-### binds
+## binds
 
 A function that returns an attrset describing all modes and bindings within them. The function should take an attrset: `{ sh, mode, ... }`, where `sh` and `mode` are functions that take strings.
 
@@ -54,15 +54,4 @@ programs.niri.bind-modes.binds = { sh, mode, ... }: {
         MOD.CTRL.A = [ "spawn" "allacrity" ]; # modes can override binds set in default mode
     };
 };
-```
-
-## enableConfigFile
-
-Whether to write the contents of `extraConfig` to `config.kdl`. If `enableBindsFile` is set, this will also add the line `include "binds.kdl"` to `config.kdl`.
-
-### extraConfig
-
-Lines to write to `config.kdl`. Because `enableConfigFile` overwrites `config.kdl`, if you want to add anything to `config.kdl` you must do it through this option. An easy way to do this is:
-``` nix
-programs.niri.bind-modes.extraConfig = builtins.readFile ./config.kdl;
 ```
