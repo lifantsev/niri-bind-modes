@@ -1,16 +1,16 @@
 # niri-bind-modes
 
-Niri [doesn't offer](https://github.com/niri-wm/niri/issues/846) mode-based keybinds out of the box (also called layers or submaps). This flake helps by compiling an easy to read, mode-based keybind definition into a settings attrset for [niri-flake](https://github.com/sodiboo/niri-flake). Fully native and static: no scripts or daemons.
+Niri [doesn't offer](https://github.com/niri-wm/niri/issues/846) mode-based keybinds out of the box (also called layers or submaps). This flake helps by compiling an easy to read, mode-based keybind definition into a settings attrset for [niri-flake](https://github.com/sodiboo/niri-flake), which generates a static niri config.kdl: no runtime modification of config.kdl.
 
 ### how it works
 
-A temporary file contains the name of the current mode. Keys are bound using `spawn-sh`, and they read/write this file to determine what to do.
+A temporary file contains the current mode name. Keys are bound using `spawn-sh`, and they read/write this file to determine what to do.
 
 ### limitations
 
 - Depends on [niri-flake](https://github.com/sodiboo/niri-flake) to generate config.kdl.
 - Modes are only 'one-shot', if you want modes that persist for multiple key presses, open an issue or email me and I'll implement it.
-- Keys that are bound in any mode are bound globally. This means that if you bind `Mod+R` to a resizing mode, and within that mode you bind `hjkl` to resizing actions, `hjkl` will be bound (and therefore intercepted) even if their mode isn't active. You can work around this by binding them to [wtype](https://github.com/atx/wtype) in other modes. This could be added to this flake as some sort of passthrough option; if you would like that, open an issue or email me.
+- Keys bound in a given mode, are still bound when their mode isn't active (because the config.kdl is static). They will just read the mode file and do nothing. A workaround is passing the keys through by binding them to [wtype](https://github.com/atx/wtype) in other modes. This could be added as opt in behaviour; if you would like that, open an issue or email me.
 
 ### planned features
 
